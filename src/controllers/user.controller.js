@@ -1,6 +1,4 @@
-const { User } = require('../models');
 const { userService } = require('../services');
-const jwt = require('../utils');
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -14,10 +12,13 @@ const login = async (req, res) => {
 const create = async (req, res) => {
   const newUser = req.body;
 
-  await User.create(newUser);
-
-  const token = jwt.sign(newUser);
-  res.status(201).json({ token });
+  try {
+    const { type, message } = await userService.create(newUser);
+    if (type) return res.status(409).json({ message });
+    return res.status(201).json({ token: message });
+  } catch (error) {
+    return res.status(500).json('Internal Service Error');
+  }
 };
 
 module.exports = { login, create };
