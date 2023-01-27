@@ -18,4 +18,6 @@ app.post(
 
 app.get('/user', middlewares.validateToken, userController.findAll);
 
+app.get('/user/:id', middlewares.validateToken, userController.findById);
+
 module.exports = app;
