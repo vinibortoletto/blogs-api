@@ -1,10 +1,7 @@
 const { User } = require('../models');
+const jwt = require('../utils');
 
 const login = async (email, password) => {
-  if (!email || !password) {
-    return { type: 'REQUIRED_FIELD', message: 'Some required fields are missing' };
-  }
-
   const user = await User.findOne({
     where: { email },
   });
@@ -13,7 +10,8 @@ const login = async (email, password) => {
     return { type: 'INVALID_FIELD', message: 'Invalid fields' };
   }
 
-  return { type: null, message: '' };
+  const token = jwt.sign({ email, password });
+  return { type: null, message: token };
 };
 
 module.exports = { login };
