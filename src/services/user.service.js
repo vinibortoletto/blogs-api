@@ -35,8 +35,19 @@ const findAll = async () => {
   return { type: null, message: users };
 };
 
+const findById = async (id) => {
+  const user = await User.findOne({
+    where: { id },
+    attributes: { exclude: ['password'] },
+  });
+  
+  if (!user) return { type: 'NOT_FOUND', message: 'User does not exist' };
+  return { type: null, message: user };
+};
+
 module.exports = { 
   login,
   create,
   findAll,
+  findById,
 };
