@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
 
-      display_name: {
+      displayName: {
         allowNull: false,
         type: DataTypes.STRING,
       },
@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       timestamps: false,
       tableName: 'users',
+      underscored: true
     }
   );
 
