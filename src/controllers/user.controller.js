@@ -1,10 +1,11 @@
 const { userService } = require('../services');
+const { BAD_REQUEST, CONFLICT, CREATED, INTERNAL_SERVER_ERROR } = require('../utils/statusCodes');
 
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   const { type, message } = await userService.login(email, password);
-  if (type) return res.status(400).json({ message });
+  if (type) return res.status(BAD_REQUEST).json({ message });
 
   res.status(200).json({ token: message });
 };
@@ -14,10 +15,10 @@ const create = async (req, res) => {
 
   try {
     const { type, message } = await userService.create(newUser);
-    if (type) return res.status(409).json({ message });
-    return res.status(201).json({ token: message });
+    if (type) return res.status(CONFLICT).json({ message });
+    return res.status(CREATED).json({ token: message });
   } catch (error) {
-    return res.status(500).json('Internal Service Error');
+    return res.status(INTERNAL_SERVER_ERROR).json('Internal Service Error');
   }
 };
 
