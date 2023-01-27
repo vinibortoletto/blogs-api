@@ -8,8 +8,7 @@ const login = async (req, res) => {
   const { type, message } = await userService.login(email, password);
   if (type) return res.status(400).json({ message });
 
-  const token = jwt.sign({ email, password });
-  res.status(200).json({ token });
+  res.status(200).json({ token: message });
 };
 
 const create = async (req, res) => {
