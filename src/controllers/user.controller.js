@@ -1,5 +1,5 @@
 const { userService } = require('../services');
-const { BAD_REQUEST, CONFLICT, CREATED, OK } = require('../utils/statusCodes');
+const { BAD_REQUEST, CONFLICT, CREATED, OK, NOT_FOUND } = require('../utils/statusCodes');
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -31,7 +31,24 @@ const findAll = async (_req, res, next) => {
     return res.status(OK).json(message);
   } catch (error) {
     next(error);
- }
+  }
 };
 
-module.exports = { login, create, findAll };
+const findById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const { type, message } = await userService.findById(id);
+    if (type) return res.status(NOT_FOUND).json({ message });
+    return res.status(200).json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  login,
+  create,
+  findAll,
+  findById,
+};
