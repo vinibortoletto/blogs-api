@@ -1,13 +1,12 @@
 const { categoryService } = require('../services');
-const { BAD_REQUEST, CREATED, OK } = require('../utils/statusCodes');
+const { CREATED, OK } = require('../utils/statusCodes');
 
 const create = async (req, res, next) => {
   const newCategory = req.body;
 
   try {
-    const { type, message } = await categoryService.create(newCategory);
-    if (type) return res.status(BAD_REQUEST).json({ message });
-    return res.status(CREATED).json(message);
+    const category = await categoryService.create(newCategory);
+    return res.status(CREATED).json(category);
   } catch (error) {
     next(error);
   }
