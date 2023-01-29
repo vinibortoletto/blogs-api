@@ -50,9 +50,23 @@ const update = async (req, res, next) => {
   }
 };
 
+const remove = async (req, res, next) => {
+  const { id } = req.params;
+  const { email } = req.user;
+  
+  try {
+    const { type, message } = await postService.remove(id, email);
+    if (type) return res.status(errorTypes[type]).json({ message });
+    return res.status(NO_CONTENT).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = { 
   create, 
   findAll, 
   findById,
   update,
+  remove,
 };
