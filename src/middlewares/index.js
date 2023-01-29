@@ -5,6 +5,7 @@ const validatePassword = require('./validatePassword');
 const validateToken = require('./validateToken');
 const validateCategory = require('./validateCategory');
 const validateNewPost = require('./validateNewPost');
+const validateUpdatedPost = require('./validateUpdatedPost');
 
 module.exports = {
   validateLogin,
@@ -14,4 +15,5 @@ module.exports = {
   validateToken,
   validateCategory,
   validateNewPost,
+  validateUpdatedPost,
 };
