@@ -80,10 +80,33 @@ const remove = async (id, email) => {
   return { type: null, message: '' };
 };
 
+const search = async (searchTerm) => {
+  if (!searchTerm) {
+    const posts = await findAll();
+    return { type: null, message: posts };
+  }
+  
+  const posts = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: searchTerm } },
+        { content: { [Op.like]: searchTerm } },
+      ],
+    },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  return { type: null, message: posts };
+};
+
 module.exports = { 
   create, 
   findAll, 
   findById,
   update,
   remove,
+  search,
 };
