@@ -23,4 +23,11 @@ router.get(
   postController.findById,
 );
 
+router.put(
+  '/:id', 
+  middlewares.validateToken,
+  middlewares.validateUpdatedPost,
+  postController.update,
+);
+
 module.exports = router;
