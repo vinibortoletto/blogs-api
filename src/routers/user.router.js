@@ -24,4 +24,10 @@ router.get(
   userController.findById,
 );
 
+router.delete(
+  '/me', 
+  middlewares.validateToken, 
+  userController.remove,
+);
+
 module.exports = router;
