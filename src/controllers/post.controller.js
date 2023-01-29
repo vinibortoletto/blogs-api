@@ -1,5 +1,5 @@
 const { postService } = require('../services');
-const { CREATED, BAD_REQUEST } = require('../utils/statusCodes');
+const { CREATED, BAD_REQUEST, OK } = require('../utils/statusCodes');
 
 const create = async (req, res, next) => {
   const { email } = req.user;
@@ -14,4 +14,12 @@ const create = async (req, res, next) => {
   }
 };
 
-module.exports = { create };
+const findAll = async (_req, res, next) => {
+  try {
+    const posts = await postService.findAll();
+    return res.status(OK).json(posts);
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = { create, findAll };
