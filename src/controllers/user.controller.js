@@ -1,6 +1,6 @@
 const { userService } = require('../services');
 const errorTypes = require('../utils/errorTypes');
-const { CREATED, OK } = require('../utils/statusCodes');
+const { CREATED, OK, NO_CONTENT } = require('../utils/statusCodes');
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -47,9 +47,19 @@ const findById = async (req, res, next) => {
   }
 };
 
+const remove = async (req, res, next) => {
+  try {
+    await userService.remove(req.user);
+    return res.status(NO_CONTENT).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   login,
   create,
   findAll,
   findById,
+  remove,
 };
