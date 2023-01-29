@@ -22,4 +22,14 @@ const create = async ({ title, content, categoryIds }, email) => {
   return { type: null, message: post };
 };
 
-module.exports = { create };
+const findAll = async () => {
+  const posts = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories' },
+    ],
+  });
+
+  return posts;
+};
+module.exports = { create, findAll };
