@@ -1,5 +1,5 @@
 const { postService } = require('../services');
-const { CREATED, BAD_REQUEST, OK, NOT_FOUND } = require('../utils/statusCodes');
+const { CREATED, BAD_REQUEST, OK, NOT_FOUND, UNAUTHORIZED } = require('../utils/statusCodes');
 
 const create = async (req, res, next) => {
   const { email } = req.user;
@@ -35,4 +35,23 @@ const findById = async (req, res, next) => {
   }
 };
 
-module.exports = { create, findAll, findById };
+const update = async (req, res, next) => {
+  const updatedPost = req.body;
+  const { id } = req.params;
+  const { email } = req.user;
+
+  try {
+    const { type, message } = await postService.update(updatedPost, id, email);
+    if (type) return res.status(UNAUTHORIZED).json({ message });
+    return res.status(OK).json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { 
+  create, 
+  findAll, 
+  findById,
+  update,
+};
