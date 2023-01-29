@@ -4,6 +4,12 @@ const { postController } = require('../controllers');
 
 const router = express.Router();
 
+router.get(
+  '/search', 
+  middlewares.validateToken,
+  postController.search,
+);
+
 router.post(
   '/', 
   middlewares.validateToken,
