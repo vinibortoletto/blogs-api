@@ -19,7 +19,7 @@ const create = async (newUser) => {
   const user = await User.findOne({ where: { email } });
   
   if (user) {
-    return { type: 'CONFLICT', message: 'User already registered' };
+    return { type: 'USER_ALREADY_EXISTS', message: 'User already registered' };
   }
 
   await User.create(newUser);
@@ -41,7 +41,7 @@ const findById = async (id) => {
     attributes: { exclude: ['password'] },
   });
   
-  if (!user) return { type: 'NOT_FOUND', message: 'User does not exist' };
+  if (!user) return { type: 'USER_NOT_FOUND', message: 'User does not exist' };
   return { type: null, message: user };
 };
 
