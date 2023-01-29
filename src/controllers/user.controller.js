@@ -1,12 +1,13 @@
 const { userService } = require('../services');
-const { BAD_REQUEST, CONFLICT, CREATED, OK, NOT_FOUND } = require('../utils/statusCodes');
+const errorTypes = require('../utils/errorTypes');
+const { CREATED, OK } = require('../utils/statusCodes');
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
     const { type, message } = await userService.login(email, password);
-    if (type) return res.status(BAD_REQUEST).json({ message });
+    if (type) return res.status(errorTypes[type]).json({ message });
     res.status(200).json({ token: message });
   } catch (error) {
     next(error);
@@ -18,7 +19,7 @@ const create = async (req, res, next) => {
 
   try {
     const { type, message } = await userService.create(newUser);
-    if (type) return res.status(CONFLICT).json({ message });
+    if (type) return res.status(errorTypes[type]).json({ message });
     return res.status(CREATED).json({ token: message });
   } catch (error) {
     next(error);
@@ -39,7 +40,7 @@ const findById = async (req, res, next) => {
 
   try {
     const { type, message } = await userService.findById(id);
-    if (type) return res.status(NOT_FOUND).json({ message });
+    if (type) return res.status(errorTypes[type]).json({ message });
     return res.status(200).json(message);
   } catch (error) {
     next(error);

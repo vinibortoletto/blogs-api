@@ -10,7 +10,7 @@ const create = async ({ title, content, categoryIds }, email) => {
   });
 
   if (count !== categoryIds.length) {
-    return { type: 'INVALID_CATEGORY', message: 'one or more "categoryIds" not found' };
+    return { type: 'CATEGORY_NOT_FOUND', message: 'one or more "categoryIds" not found' };
   }
 
   await PostCategory.bulkCreate(
@@ -43,7 +43,7 @@ const findById = async (id) => {
   });
 
   if (!post) {
-    return { type: 'NOT_FOUND', message: 'Post does not exist' };
+    return { type: 'POST_NOT_FOUND', message: 'Post does not exist' };
   }
 
   return { type: null, message: post };
@@ -57,7 +57,7 @@ const update = async (updatedPost, id, email) => {
   });
 
   if (!isUpdated) {
-    return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
+    return { type: 'UNAUTHORIZED_USER', message: 'Unauthorized user' };
   }
 
   const post = await findById(id);
