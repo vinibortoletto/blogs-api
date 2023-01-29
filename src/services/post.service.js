@@ -49,4 +49,24 @@ const findById = async (id) => {
   return { type: null, message: post };
 };
 
-module.exports = { create, findAll, findById };
+const update = async (updatedPost, id, email) => {
+  const { id: userId } = await User.findOne({ where: { email } });
+
+  const [isUpdated] = await BlogPost.update(updatedPost, {
+    where: { id, userId },
+  });
+
+  if (!isUpdated) {
+    return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
+  }
+
+  const post = await findById(id);
+  return post;
+};
+
+module.exports = { 
+  create, 
+  findAll, 
+  findById,
+  update,
+};
