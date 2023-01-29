@@ -1,5 +1,5 @@
 const { postService } = require('../services');
-const { CREATED, BAD_REQUEST, OK } = require('../utils/statusCodes');
+const { CREATED, BAD_REQUEST, OK, NOT_FOUND } = require('../utils/statusCodes');
 
 const create = async (req, res, next) => {
   const { email } = req.user;
@@ -22,4 +22,17 @@ const findAll = async (_req, res, next) => {
     next(error);
   }
 };
-module.exports = { create, findAll };
+
+const findById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const { type, message } = await postService.findById(id);
+    if (type) return res.status(NOT_FOUND).json({ message });
+    return res.status(OK).json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { create, findAll, findById };
